@@ -11,7 +11,7 @@ var count;
 var flowFiled = [];
 
 function setup() {
-  createCanvas(200,200,WEBGL);
+  createCanvas(200,200);
   background(255);
   cols = floor(width/scl);
   rows = floor(height/scl);
@@ -25,7 +25,9 @@ function setup() {
 }
 var zoff = 0;
 function draw() {
-	// fill(255,10);
+  noStroke();
+	fill(255,10);
+  rect(0,0,width,height);
 	var xoff=0;
 	for (var x =0; x<rows; x++) {
 		var yoff= 0;

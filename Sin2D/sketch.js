@@ -78,32 +78,6 @@ function draw() {
     waveSystem.setup();
   }
 
-  // var x = 50;
-  // var y = 50;
-  // fill(255);
-  // ellipse(x,y,5,5);
-
-  // push();
-  // translate(0,height/2);
-  
-   // 读取当前Convas的像素点，并传到pixels变量中
-  // loadPixels();
-  // for (var x =0;x < width;x++) {
-  //   for (var y = 0;y < height;y++) {
-  //     var index = (x + y * width) * 4;
-  //     // var r = random(255);
-  //     var r = random(0,100);//noise(xoff,yoff) * 255;
-  //     pixels[index + 0] = r;
-  //     pixels[index + 1] = r;
-  //     pixels[index + 2] = r;
-  //     pixels[index + 3] = 255;
-  //   }
-  // }
-  // updatePixels();
-  // print(111);
-  // var origin = createVector(random(- width + 10,width*2),random(-height,2*height));
-  // var randomWave = new Wave(origin,5,random(10,100),random(2,10));
-
   var origin = createVector(-width,height/2);
   var randomWave = new Wave(origin,10,30,2);
 
@@ -126,6 +100,4 @@ function draw() {
         
       }
     }
-
-  // pop();
 }

@@ -1,23 +1,34 @@
 
+var scl = 2; // 点的大小
+var inc = 0.08; // 局部变化幅度
+var count= 2000; // 点的数量
+
+
 var fr;
-// 小面片的大小
-var scl = 5
-var inc = 0.1;
 var cols;
 var rows;
 var particles = [];
 
-var count;
+
 var flowFiled = [];
+var zArray = [];
+var sinWaves = [];
+
+
+function backgrounColorWithAlpha(alpha) {
+
+  return color(0,255 * alpha);
+
+}
 
 function setup() {
-  createCanvas(200,200);
-  background(255);
+  createCanvas(400,400);
+  background(backgrounColorWithAlpha(1.0));
   cols = floor(width/scl);
   rows = floor(height/scl);
   fr = createP('');
 
-  count = 5000;
+  frameRate(20);
   for (var i = 0; i < count; i++) {
   	particles[i] = new Particle();
   }
@@ -26,26 +37,20 @@ function setup() {
 var zoff = 0;
 function draw() {
   noStroke();
-	fill(255,10);
+	fill(backgrounColorWithAlpha(1.0));
   rect(0,0,width,height);
 	var xoff=0;
 	for (var x =0; x<rows; x++) {
 		var yoff= 0;
 		for (var y = 0; y < cols; y++) {
-			var r = noise(xoff,yoff,zoff*0.03);
-     		var angle = r * TWO_PI * 4;//map(r,0,1,0,TWO_PI)
+      var r = noise(xoff,yoff,zoff*0.03);
+     		 var angle =PI + r * 2*PI;//map(r,0,1,0,TWO_PI)
       // var angle = random(TWO_PI);
-      		var v = p5.Vector.fromAngle(angle);
-      		var index = x + y * cols;
-      		v.setMag(0.5);// x^2 + y^2 =0.1;
-      		flowFiled[index] = v;
-      		// stroke(0,100);
-      		// push();
-      		// translate(x*scl,y*scl);
-      		// rotate(v.heading());
-      		// line(0,0,scl,0);
-      		// pop();
-      		yoff+=inc;
+      var v = p5.Vector.fromAngle(angle);
+      v.z = r;
+      var index = x + y * cols;
+      flowFiled[index] = v;
+      yoff+=inc;
  		}
   		xoff+=inc;
 	}

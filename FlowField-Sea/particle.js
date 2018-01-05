@@ -11,11 +11,13 @@ function Particle () {
 	this.maxSpeed = 2;
 	this.colorValue = color(random(255),random(255),random(255),random(255));
 	this.update = function () {
-		
-		this.vel.add(this.acc);
+		// 衰减
+		this.vel.mult(0.1)
+		this.vel.add(this.acc.mult(0.9));
 		// 限制最大速度
 		this.vel.limit(this.maxSpeed);
 		this.pos.add(this.vel);
+		// 乘以0，用以重置。
 		this.acc.mult(0);
 	}
 
@@ -26,14 +28,16 @@ function Particle () {
 	}
 
 	this.show = function () {
-		stroke(0,5);
-		strokeWeight(1)
-		// fill(this.colorValue);
-		// ellipse(this.pos.x,this.pos.y,scl,scl);
-		line(this.pos.x,this.pos.y,this.prevPos.x,this.prevPos.y);
-
-		// point(this.pos.x,this.pos.y);
-		this.updatePrePos();
+		// stroke(0,5);
+		noStroke();
+		//print(this.vel.z);
+		// fill(0,this.vel.z * 10);
+		var alphaZ = map(this.vel.z,0,0.8,-255,255);
+	
+		if (alphaZ > 0) {
+			fill(255,alphaZ);
+			ellipse(this.pos.x,this.pos.y,scl,scl);
+		}
 	}
 
 	this.follow = function (vectors) {

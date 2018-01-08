@@ -1,4 +1,28 @@
-var countOfMountain = 10; 
+
+/*
+  createCanvas(1920,1080);
+  countOfMountain = 15;
+  y0 -= i0 / pow(0.97, i);
+
+
+  draw() {
+    var alfa = 0.8;//= map(mouseX,0,height,0,1);
+    noStroke();
+    // 这里可以设置透明度
+    fill(backgrounColorWithAlpha(map(alfa,0,1,255,100)));
+    rect(0,0,width,height);
+    mountainSystem.update(alfa);
+    mountainSystem.draw();
+  }
+
+*/
+
+
+
+
+
+
+var countOfMountain = 15; 
 
 function MountainSystem() {
 
@@ -14,7 +38,8 @@ function MountainSystem() {
     var index = count-1-i;
     this.mountainsArray[index] = new Mountain();
     this.mountainsArray[index].setup(index+1,y0,closerColor,furtherColor);
-    y0 -= i0 / pow(1.05, i);
+    y0 -= i0 / pow(0.97, i);
+
   }
 
   this.update = function (precent_) {
@@ -27,9 +52,9 @@ function MountainSystem() {
 
 
  this.draw = function() {
-  var minYArray = [height];
+  var minYArray = [];
   for (var i = this.mountainsArray.length - 1; i >= 0; i--) {
-    for (var column = 0; column < width/5;column++) {
+    for (var column = 0; column < width/5+10;column++) {
       if (i == this.mountainsArray.length - 1) {
        minYArray[column] = height;
      }
@@ -59,10 +84,10 @@ function Mountain() {
     this.d = random(40, 50);  //noise function amplitude
     this.e = random(-width/2, width/2);  //adds a discrepancy between the noise of each mountain  
 
-    this.startX = random(-10,0);
     this.startHeight = height/10;
 
-    this.columns = (width)/itemWidth;
+    this.columns = (width)/itemWidth + 10;
+    
     this.yArray = [this.columns]; 
             // 不透明度百分比。0为透明
     this.precent = 1;
@@ -71,6 +96,7 @@ function Mountain() {
   this.update = function (precent_) {
     this.precent = precent_;
     var dx = 0;
+    // print(this.columns);
     for (var column = 0; column < this.columns;column++) {
       var y =0;
       y+= this.bottomY;
@@ -88,15 +114,16 @@ function Mountain() {
       	var precent = this.index/countOfMountain * this.precent;//(this.bottomY-this.startHeight)/(height-this.startHeight);
 
       	var colorOfRect = lerpColor(this.furtherColor, this.closerColor, precent); 
-      	var widthOfRect =  map(precent,0,1,0.5,3.5);
+      	var widthOfRect =  map(precent,0,1,0.5,4);
 
       	noStroke();
       	fill(colorOfRect);
+
       	for (var column = 0; column < this.columns;column++) {
       		for (var k = this.yArray[column];k < lastMountain[column];k+=0) {
       			var heightOfRect = random(2,8);
-      			rect(this.index + column*itemWidth,k,widthOfRect,heightOfRect);
-      			k+= heightOfRect+1;
+      			rect(-this.index+column*itemWidth,k,widthOfRect,heightOfRect);
+      			k+= heightOfRect+2;
       		}
       	}
       }

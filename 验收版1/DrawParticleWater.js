@@ -1,3 +1,22 @@
+/*
+ *
+    画布尺寸1920*1080
+    water = new DrawParticleWater(60,0.08,300);
+    var alfa =25;//= map(mouseX,0,width,0,100);
+    fr.html(alfa);
+    noStroke();
+    fill(backgrounColorWithAlpha(alfa));
+    rect(0,0,width,height);
+    fill(255);   
+    water.update();
+
+
+ *
+ * /
+ 
+
+
+
 /**
  * Created by Administrator on 2017/12/30.
  */
@@ -12,7 +31,6 @@ function DrawParticleWater(seaResolution,noiseScale,heightScale)
 
     this.positionArrXpos = new Array(seaResolution*seaResolution);//上一帧的位置数组
     this.positionArrYpos = new Array(seaResolution*seaResolution);//上一帧的位置数组
-    this.positionXiangSi = new Array(seaResolution*seaResolution);
 
     for (var h = 0; h<this.seaResolution;h++)
     {
@@ -20,12 +38,10 @@ function DrawParticleWater(seaResolution,noiseScale,heightScale)
         {
             this.positionArrXpos[h*seaResolution+w] = 0;
             this.positionArrYpos[h*seaResolution+w] = 0;
-            this.positionXiangSi[h*seaResolution+w] = 0;
-
         }
     }
 
-    this.dotSize = 3;//元素大小
+    this.dotSize = 4;//元素大小
     this.perlinNoiseAnimX = 0.02;//噪声取值时间轴
     this.perlinNoiseAnimY = 0.02;
     this.xSpeed = 0.01;    //更新噪声取值时间轴 调节数值克控制速度
@@ -39,8 +55,8 @@ DrawParticleWater.prototype.update = function()
         for(var w = 0;w<this.seaResolution;w++)
         {
             var xPos = noise( -w * this.noiseScale + this.perlinNoiseAnimY,-h * this.noiseScale + this.perlinNoiseAnimX);
-            var dotX  = w * this.widthNormalize+h%2*this.widthNormalize*0.5+xPos * this.heightScale- width/8;
-            var doty = h * this.heightNormalize + xPos * this.heightScale*0.5-height/8;
+            var dotX  = w * this.widthNormalize+h%2*this.widthNormalize*0.5+xPos * this.heightScale- 160;
+            var doty = h * this.heightNormalize + xPos * this.heightScale*0.5-80;
 
             if(dotX > this.positionArrXpos[h*this.seaResolution+w])
             this.drawDot(dotX, doty);
@@ -99,9 +115,8 @@ DrawParticleWater.prototype.setSeaResolution = function(seaResolution) {
             {
 
                 if (h >= smallOne || w >= smallOne) {
-                    this.positionArrXpos[h*seaResolution+w] = random(width);
-                    this.positionArrYpos[h*seaResolution+w] = random(height);
-                    this.positionXiangSi[h*seaResolution+w] = 0;
+                    this.positionArrXpos[h*seaResolution+w] = h*seaResolution+w;//random(width);
+                    this.positionArrYpos[h*seaResolution+w] = h*seaResolution+w;//random(height);
                 }
             }
         }

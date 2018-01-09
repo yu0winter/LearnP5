@@ -11,28 +11,37 @@ var cloudSystem;
 var mountainSystem;
 var water;
 function setup() {
-  createCanvas(500,500);
+  createCanvas(1920,1080);
   background(backgrounColorWithAlpha(255));
   fr = createP('');
   rate = 10; // 每秒刷新的帧数
   frameRate(rate);
   cloudSystem = new CloudSystem();
   mountainSystem = new MountainSystem();
-  water = new DrawParticleWater(60,0.1,300);
+  water = new DrawParticleWater(60,0.08,300);
   // 30 秒拆分成三个部分
   var perSeconds =  10 *rate;
   animation1 = [0,perSeconds *0.2,perSeconds *0.8,perSeconds];
   animation2 = [perSeconds,perSeconds*1.2,perSeconds*1.8,perSeconds*2];
   animation3 = [perSeconds*2,perSeconds*2.2,perSeconds*2.8,perSeconds*3];
+  noSmooth();
 }
 
 
 var list = [];
 function draw() {
-  fr.html(floor(frameRate()));
-  var count = frameCount % (30*rate);
-  
 
+  //fr.html(floor(frameRate()));
+  //
+  var count = frameCount % (30*rate);
+  var alfa = map(mouseX,0,width,0,100);
+  fr.html(alfa);
+  noStroke();
+  fill(backgrounColorWithAlpha(alfa));
+  rect(0,0,width,height);
+  fill(255);   
+  water.update();
+  return;
 
   // 海洋 进场
   // 海洋 展示

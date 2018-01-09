@@ -1,66 +1,73 @@
-
-var scl = 1;
-var colmns = 0;
-var rows = 0;
-var inc = 0.01;
-var zOff = 0;
-var scale;
-
-var bgColor;
-var fr;
+// 点击屏幕，可以暂停
+var cloudSystem;
+var mountainSystem;
+var water;
 function setup() {
-  createCanvas(200,100);
- bgColor= color(6,31,74)
-  rows = floor(height/scl);
-  columns = floor(width/scl);
-	fr = createP('');
-	scale = 0.1;
-	background(bgColor);
+  createCanvas(1920,1080);
+  // createCanvas(400,400);
+  background(backgrounColorWithAlpha(255));
+  // fr = createP('');
+  rate = 10; // 每秒刷新的帧数
+  frameRate(rate);
+  cloudSystem = new CloudSystem();
+  noSmooth();
 }
 
+
+var list = [];
 function draw() {
-	
-var direction;
+   alfa = 3;
+  noStroke();
+    fill(backgrounColorWithAlpha(255));
+    rect(0,0,width,height);
+    cloudSystem.draw(alfa);
+}
 
-	var sas=Math.log(1);
 
-  	fr.html(floor(frameRate()));
+function CloudSystem () {
+  var itemHeight = 10; //显示单元的最大宽度
+  var itemWidth = 2;  //显示单元的最大高度
+  var xScale = 0.01;// 水平方向变化幅度，该值越大，代表变化幅度越大
+  var yScale = 0.1;// 竖直方向变化幅度，该值越大，代表变化幅度越大
 
-  	fill(6,31,74,100)
-  	rect(0,0,width,height);
+  var rows = floor(height/itemHeight);
+  var columns = floor(width/itemWidth);
 
-  // 	if (frameCount % 60) {
-		// scale -= 0.001; 
-  // 	} else if (frameCount == 300) {
-  // 		return;
-  // 	}
+  this.draw = function (precent){
 
-	if (frameCount % 2 == 0) {
-		direction = 1;
-	} else {
-		direction = -1;
-	}
+    for (var j = 0; j < rows;j+=1) {
 
-	for(var i = 0; i < columns; i++) {
-		for (var j = 0; j < rows;j++) {
-			var nosieValue = noise((frameCount * 0.25+i) * scale,(j)*scale,frameCount *0.03);
-			noStroke();
+      var maxAlpha = map(j*itemHeight, 0, height, 0, 520*precent); 
+      if (maxAlpha<1) {
+        continue;
+      }
 
-			var alpha;
-			if(nosieValue < 0.5) {
- 				alpha = 0;
-			} else {
-				var temp = map(nosieValue,0.5,1,0,1);
-				alpha = nosieValue *nosieValue * nosieValue * 255;
-				// =  nosieValue-0.5 * 255;
-			}
-			
-			fill(255,alpha);
-			rect(i*scl,j*scl,scl,scl);
-		}
+      for(var i = 0; i < columns; i+=1) {
+        var nosieValue = noise((-frameCount * 0.05) + i *0.02,j*0.1,frameCount *0.02);
+        var alpha = map(nosieValue,0.4,1,0,maxAlpha);
+        if (alpha < 1) {
+          continue;
+        }
+        noStroke();     
+        fill(255);
+        var w = map(nosieValue,0,0.8,0,itemWidth*1)
+        rect(i*itemWidth+random(0,1),j*itemHeight,nosieValue*itemWidth , itemHeight*nosieValue);
+      }
+    }
+  }
+}
 
-	}
+function backgrounColorWithAlpha(alpha)  {
+  return color(137,190,223,alpha);
+}
 
-	zOff += 1;
-	//noLoop(); 
+
+var isStop ;
+function mousePressed() {
+  isStop = !isStop;
+  if (isStop) {
+    noLoop();
+} else {
+    loop();
+}
 }

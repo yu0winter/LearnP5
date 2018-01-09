@@ -2,19 +2,23 @@
 var water;
 
 function setup() {
-	createCanvas(400,200);
+	createCanvas(1000,800);
 	background(backgrounColorWithAlpha(255));
 	print(backgrounColorWithAlpha(255));
 	frameRate(20);
-	water = new DrawParticleWater(30,0.04,300);
+	water = new DrawParticleWater(30,0.04,450);
+	// water.setup();
 }
 
 function draw() {
 	// background(14,136,235);
 
-	fill(backgrounColorWithAlpha(150));
+	fill(backgrounColorWithAlpha(10));
 	rect(0,0,width,height);
-	water.update();
+	fill(255);
+	noStroke();
+	water.Update1();
+	// water.drawDots();
 }
 
 

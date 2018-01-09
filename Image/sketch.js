@@ -2,7 +2,7 @@ var img;
 var pointList = [];
 
 function preload() {
-  img = loadImage("avatar.jpg");
+  img = loadImage("/Users/yuyanyu/Desktop/Code/LearnP5/Image/avatar.jpg");
   print('preload');
 }
 

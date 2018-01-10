@@ -5,9 +5,15 @@ var columns;
 var itemHeight;
 var itemWidth;
 
+function backgrounColorWithAlpha(alpha)  {
+  return color(137,190,223,alpha);
+}
+
 function setup() {
-  createCanvas(400,400);
-  background(0);
+  createCanvas(800,1400,SVG);
+  background(backgrounColorWithAlpha(255));
+  pdf = createPDF();
+    pdf.beginRecord();
   itemWidth = 10;
   itemHeight = 10;
   rows = height/itemHeight+1;
@@ -16,28 +22,26 @@ function setup() {
       // 2.在 setup 方法中添加代码。需要导出矢量 PDF 文件
     // If we use SVG Renderer, then the PDF generated will be vector
     // Note that to use SVG Renderer, you must include p5.svg library
-    createCanvas(600, 200, SVG);
-    pdf = createPDF();
-    pdf.beginRecord();
+    
 }
 
 // 3.点击鼠标，触发保存保存 PDF 事件
 function mousePressed() {
+  noLoop();
     pdf.save(); 
+    // saveSVG();
 }
-
-
 
 function draw() {
 
- background(0);
+background(backgrounColorWithAlpha(255));
  
  var yoff = 10;
 
  for (var row =0; row < rows; row++) {
 
   beginShape();
-  stroke(255,100);
+  stroke(255,150);
   noFill();
   strokeWeight(2);
   for(var column = 0;column < columns;column++) {

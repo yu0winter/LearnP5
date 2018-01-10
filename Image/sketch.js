@@ -1,63 +1,85 @@
 var img;
 var pointList = [];
+var showPointList =[];
+var enterDuration = 1*60;// 进入时间
+var sleepDuration = 1*60; // 持续时间
+var exitDuration = 0.75*60; // 退出时间
+
 
 function preload() {
-  img = loadImage("/Users/yuyanyu/Desktop/Code/LearnP5/Image/avatar.jpg");
+  img =  loadImage("city.png");
   print('preload');
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  background(100);
+  createCanvas(1920, 1080);
+  background(0);
   print("setup");
   
-    imageMode(CENTER);
   noStroke();
-  background(255);
+  background(0);
   img.loadPixels();
-  var imageCenter = new PointModule(windowWidth/2.0,windowHeight/2.0);
-  for (var i = 0 ;i < 10;i++) {
-    var x = floor(random(img.width));
-    var y = floor(random(img.height));
-    var pixColor = img.get(x, y);// Color of the point
-    var size = random(2,5);
-    var origin;
-    // 余数
-    var remainder = i % 4;
-    if (remainder == 0) {
-      // 左边
-      origin = new PointModule(0,random(0,windowHeight));
-    } else if (remainder == 1) {
-      // 上边
-      origin = new PointModule(random(0,windowWidth),0);
-    } else if (remainder == 2) {
-      // 右边
-      origin = new PointModule(windowWidth,random(0,windowHeight));
-    } else {
-      origin = new PointModule(random(0,windowWidth),windowHeight);
-    }
-    var pixLocation = new PointModule(x,y);
-    var module =  new IconModule(origin,imageCenter,pixLocation,pixColor,size);
-    pointList[i] = module;
-  }
+  print('finished loadPixels');
+  var imageCenter = new PointModule(0,0);
+  setupPointList(imageCenter);
 }
 
+// 点击屏幕，重新来过。
+function mousePressed() {
+  time = 0;
+}
 var time = 0;
+var color;
 function draw() {
   if (time == 0) {
     print("start drawing");
   }
-  
-  // ellipse(mouseX, mouseY, 20, 20);
-  background(255);
-  // imageMode(CENTER)
-  // image(img,500,500,200,200);
-  // print(pointList.length)
-  for (var i = 0; i < pointList.length; i++) {
-    pointList[i].update(time);
-    pointList[i].draw();
+  background(0);
+
+  var showPerTime = 100;
+
+  for (var i = 0; i < showPerTime; i++) {
+    p
+
+  }
+
+
+
+  if (time <= enterDuration + sleepDuration + exitDuration) {
+    for (var i = 0; i < pointList.length; i++) {
+      pointList[i].update(time);
+      pointList[i].draw();
+    }
+  } else{
+    pointList = null;
   }
   time++;
+}
+
+
+function setupPointList(_imageCenter){
+  var maxSize = 5;
+  var index=0;
+  print (img.width + "," + img.height);
+  for (var i = 0; i < img.width;i += maxSize) {
+    for (var j = 0;j < img.height;j += maxSize) {
+
+      var pixColor = img.get(i,j);// Color of the point
+      var redValue = red(pixColor);
+      if (redValue < 10) {
+        continue;
+      }
+      var size = random(2,5);
+      var origin = new PointModule(random(windowWidth),random(windowHeight));
+      var pixLocation = new PointModule(i,j);
+      var module =  new IconModule(origin,_imageCenter,pixLocation,pixColor,size);
+      pointList[index] = module;
+
+      index++;
+    }
+  }
+  
+  print("pointList.length:"+pointList.length);
 }
 
 function IconModule (_origin,_imageCenter,_pixLocation,_pixColor,_size) {
@@ -65,33 +87,34 @@ function IconModule (_origin,_imageCenter,_pixLocation,_pixColor,_size) {
   this.imageCenter = _imageCenter;
   this.pixLocation = _pixLocation;
   this.target = new PointModule(this.imageCenter.x + this.pixLocation.x,
-                               this.imageCenter.y + this.pixLocation.y);
+    this.imageCenter.y + this.pixLocation.y);
   this.pixColor = _pixColor;
   this.size = _size;
   this.currentLocation = new PointModule(this.origin.x,this.origin.y);
 }
 
-var enterDuration = 2*60;
-var sleepDuration = 2*60;
-var exitDuration = 1.5*60;
+
 IconModule.prototype.update = function(_time) {
   if (_time <= enterDuration) {
     var duration = enterDuration;
     var offset = _time; 
-    var velocityX = (this.target.x - this.origin.x)/this.duration * offset;
-    var velocityY = (this.target.y - this.origin.y)/this.duration * offset;
-    this.currentLocation.x = this.target.x + velocityX * offset;
-    this.currentLocation.y = this.target.y + velocityY * offset;
+    var velocityX = (this.target.x - this.origin.x)/duration;
+    var velocityY = (this.target.y - this.origin.y)/duration;
+    this.currentLocation.x = this.origin.x + velocityX * offset;
+    this.currentLocation.y = this.origin.y + velocityY * offset;
   }
   else if (_time <= enterDuration + sleepDuration) {
     // var duration = sleepDuration;
     // var offset = _time - enterDuration;
+    textSize(32);
+    fill(220,12,100);
+    text("Hello,I'm Yulong",windowWidth*0.5,100);
   }
   else if (_time <= enterDuration + sleepDuration + exitDuration) {
     var duration = exitDuration;
     var offset = _time - (enterDuration + sleepDuration);
-    var velocityX = (this.target.x - this.origin.x)/this.duration * offset;
-    var velocityY = (this.target.y - this.origin.y)/this.duration * offset;
+    var velocityX = (this.target.x - this.origin.x)/duration;
+    var velocityY = (this.target.y - this.origin.y)/duration;
     this.currentLocation.x = this.target.x - velocityX * offset;
     this.currentLocation.y = this.target.y - velocityY * offset;
   }
@@ -102,7 +125,9 @@ IconModule.prototype.update = function(_time) {
 
 IconModule.prototype.draw = function(_time) {
   fill(this.pixColor,128);
-  ellipse(this.currentLocation.x, this.currentLocation.y, this.size, this.size);
+  noStroke();
+  rect(this.currentLocation.x, this.currentLocation.y, this.size, this.size);
+  // ellipse(this.currentLocation.x, this.currentLocation.y, this.size, this.size);
 }
 
 

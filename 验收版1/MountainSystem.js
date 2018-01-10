@@ -1,27 +1,4 @@
 
-/*
-  createCanvas(1920,1080);
-  countOfMountain = 15;
-  y0 -= i0 / pow(0.97, i);
-
-
-  draw() {
-    var alfa = 0.8;//= map(mouseX,0,height,0,1);
-    noStroke();
-    // 这里可以设置透明度
-    fill(backgrounColorWithAlpha(map(alfa,0,1,255,100)));
-    rect(0,0,width,height);
-    mountainSystem.update(alfa);
-    mountainSystem.draw();
-  }
-
-*/
-
-
-
-
-
-
 var countOfMountain = 15; 
 
 function MountainSystem() {
@@ -38,7 +15,7 @@ function MountainSystem() {
     var index = count-1-i;
     this.mountainsArray[index] = new Mountain();
     this.mountainsArray[index].setup(index+1,y0,closerColor,furtherColor);
-    y0 -= i0 / pow(0.97, i);
+    y0 -= i0 / pow(0.93, i);
 
   }
 
@@ -49,27 +26,23 @@ function MountainSystem() {
      this.mountainsArray[i].update(precent_);
    }
  }
-
-
- this.draw = function() {
-  var minYArray = [];
-  for (var i = this.mountainsArray.length - 1; i >= 0; i--) {
-    for (var column = 0; column < width/5+10;column++) {
-      if (i == this.mountainsArray.length - 1) {
-       minYArray[column] = height;
+  this.draw = function() {
+    var minYArray = [];
+    for (var i = this.mountainsArray.length - 1; i >= 0; i--) {
+      for (var column = 0; column < width/5+10;column++) {
+        if (i == this.mountainsArray.length - 1) {
+         minYArray[column] = height;
+       }
+       else if (minYArray[column] > this.mountainsArray[i+1].yArray[column]) {
+         minYArray[column] = this.mountainsArray[i+1].yArray[column];
+       }
      }
-     else if (minYArray[column] > this.mountainsArray[i+1].yArray[column]) {
-       minYArray[column] = this.mountainsArray[i+1].yArray[column];
-     }
-   }
    // this.mountainsArray[i].update();
    this.mountainsArray[i].draw(minYArray);
+  }
  }
-}
 
 }
-
-
 
 function Mountain() {
   var itemWidth = 5;
@@ -90,12 +63,12 @@ function Mountain() {
     
     this.yArray = [this.columns]; 
             // 不透明度百分比。0为透明
-    this.precent = 1;
-  }
+            this.precent = 1;
+          }
 
-  this.update = function (precent_) {
-    this.precent = precent_;
-    var dx = 0;
+          this.update = function (precent_) {
+            this.precent = precent_;
+            var dx = 0;
     // print(this.columns);
     for (var column = 0; column < this.columns;column++) {
       var y =0;

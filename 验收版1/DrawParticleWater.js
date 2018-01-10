@@ -1,22 +1,3 @@
-/*
- *
-    画布尺寸1920*1080
-    water = new DrawParticleWater(60,0.08,300);
-    var alfa =25;//= map(mouseX,0,width,0,100);
-    fr.html(alfa);
-    noStroke();
-    fill(backgrounColorWithAlpha(alfa));
-    rect(0,0,width,height);
-    fill(255);   
-    water.update();
-
-
- *
- * /
- 
-
-
-
 /**
  * Created by Administrator on 2017/12/30.
  */
@@ -41,7 +22,7 @@ function DrawParticleWater(seaResolution,noiseScale,heightScale)
         }
     }
 
-    this.dotSize = 4;//元素大小
+    this.dotSize = 3;//元素大小
     this.perlinNoiseAnimX = 0.02;//噪声取值时间轴
     this.perlinNoiseAnimY = 0.02;
     this.xSpeed = 0.01;    //更新噪声取值时间轴 调节数值克控制速度

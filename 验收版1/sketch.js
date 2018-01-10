@@ -12,6 +12,7 @@ var mountainSystem;
 var water;
 function setup() {
   createCanvas(1920,1080);
+  // createCanvas(400,400);
   background(backgrounColorWithAlpha(255));
   fr = createP('');
   rate = 10; // 每秒刷新的帧数
@@ -27,22 +28,6 @@ function setup() {
   noSmooth();
 }
 
-
-var list = [];
-function draw() {
-
-  //fr.html(floor(frameRate()));
-  //
-  var count = frameCount % (30*rate);
-  var alfa = map(mouseX,0,width,0,100);
-  fr.html(alfa);
-  noStroke();
-  fill(backgrounColorWithAlpha(alfa));
-  rect(0,0,width,height);
-  fill(255);   
-  water.update();
-  return;
-
   // 海洋 进场
   // 海洋 展示
   // 海洋 退场
@@ -52,6 +37,10 @@ function draw() {
   // 山 进场
   // 山 展示
   // 山 退场
+function draw() {
+
+  fr.html(floor(frameRate()));
+  var count = frameCount % (30*rate);
 
   if (count < animation1[3]) {
     var animation = animation1;
@@ -64,7 +53,7 @@ function draw() {
       alfa = map(count,animation[2],animation[3],255,0);
     }
     noStroke();
-    fill(backgrounColorWithAlpha(map(alfa,0,255,255,60)));
+    fill(backgrounColorWithAlpha(map(alfa,0,255,255,27)));
     rect(0,0,width,height);
     fill(255,alfa);   
     water.update();
@@ -82,7 +71,7 @@ function draw() {
     noStroke();
     fill(backgrounColorWithAlpha(255));
     rect(0,0,width,height);
-    cloudSystem.draw(alfa);   
+    cloudSystem.draw(alfa);
   }
   else if (count < animation3[3]){
     var animation = animation3;
@@ -102,6 +91,4 @@ function draw() {
     mountainSystem.update(alfa);
     mountainSystem.draw();
   }
-  
-  
 }

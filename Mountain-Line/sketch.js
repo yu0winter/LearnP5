@@ -1,20 +1,32 @@
-
+// 1.添加变量
+var pdf;
 var rows;
 var columns;
 var itemHeight;
 var itemWidth;
-var pdf;
 
 function setup() {
   createCanvas(400,400);
-      pdf = createPDF();
-    pdf.beginRecord();
   background(0);
   itemWidth = 10;
   itemHeight = 10;
   rows = height/itemHeight+1;
   columns = width/itemWidth+1;
+  
+      // 2.在 setup 方法中添加代码。需要导出矢量 PDF 文件
+    // If we use SVG Renderer, then the PDF generated will be vector
+    // Note that to use SVG Renderer, you must include p5.svg library
+    createCanvas(600, 200, SVG);
+    pdf = createPDF();
+    pdf.beginRecord();
 }
+
+// 3.点击鼠标，触发保存保存 PDF 事件
+function mousePressed() {
+    pdf.save(); 
+}
+
+
 
 function draw() {
 
@@ -40,13 +52,4 @@ function draw() {
   endShape();
 }
 
-}
-
-
-
-function mousePressed() {
- 
-        pdf.save(); 
-      noLoop();
- 
 }
